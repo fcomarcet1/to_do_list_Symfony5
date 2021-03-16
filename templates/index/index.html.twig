@@ -9,6 +9,7 @@
         <tr>
             <th scope="col">#</th>
             <th scope="col">Descripción</th>
+            <th scope="col">Creada en</th>
             <th scope="col">Acciones</th>
         </tr>
         </thead>
@@ -24,6 +25,10 @@
                     {% else %}
                         {{ tarea.descripcion }}
                     {% endif %}
+                </td>
+                <td>
+                    {#{{ tarea.creadoEn | date("d/m/Y") }}#}
+                    {{ tarea.creadoEn|tiempo }}
                 </td>
                 <td>
                     <a href="{{ path('tarea_edit', {'id': tarea.id}) }}">editar</a>

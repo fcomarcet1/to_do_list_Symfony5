@@ -13,6 +13,7 @@ class TareaFixtures extends Fixture
         for ($i=0; $i<=20; $i++) {
             $tarea = new Tarea();
             $tarea->setDescripcion("Descripcion test $i");
+            $tarea->setFinalizada(0);
             $manager->persist($tarea);
         }
 

@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\TareaRepository;
 use App\Validator as AppAssert;
+use DateTime;
+use DateTimeInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @AppAssert\TareaUnica
- * @ORM\Entity(repositoryClass=TareaRepository::class) 
+ * @ORM\Entity(repositoryClass=TareaRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Tarea
 {
@@ -30,6 +33,20 @@ class Tarea
      * @ORM\Column(type="boolean")
      */
     private $finalizada;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $creadoEn;
+
+    /**
+     *@ORM\PrePersist
+     */
+    public function setValorCreadoEn()
+    {
+        $this->creadoEn = new DateTime();
+    }
+
 
     public function getId(): ?int
     {
@@ -56,6 +73,18 @@ class Tarea
     public function setFinalizada(bool $finalizada): self
     {
         $this->finalizada = $finalizada;
+
+        return $this;
+    }
+
+    public function getCreadoEn(): ?DateTimeInterface
+    {
+        return $this->creadoEn;
+    }
+
+    public function setCreadoEn(DateTimeInterface $creadoEn): self
+    {
+        $this->creadoEn = $creadoEn;
 
         return $this;
     }
