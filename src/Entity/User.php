@@ -44,6 +44,7 @@ class User implements UserInterface
     public function __construct()
     {
         $this->tareas = new ArrayCollection();
+        $this->roles = ['ROLE_USER']; // Default Role for new users
     }
 
     public function getId(): ?int

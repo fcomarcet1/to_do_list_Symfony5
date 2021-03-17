@@ -28,7 +28,7 @@ class UserFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // Admin user
+        // Admin-user
         $usuario = new User();
         $usuario->setEmail('admin@admin.com');
         $usuario->setRoles(['ROLE_ADMIN']);
@@ -39,7 +39,7 @@ class UserFixtures extends Fixture
         $manager->flush();
         $this->addReference(self::USUARIO_ADMIN_REFERENCIA, $usuario);
 
-        // User user
+        // User-user
         $usuario = new User();
         $usuario->setEmail('user@user.com');
         $usuario->setRoles(['ROLE_USER']);

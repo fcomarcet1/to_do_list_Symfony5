@@ -19,6 +19,7 @@ class IndexController extends AbstractController
      *  requirements={"pagina"="\d+"},
      *  methods={"GET"}
      * )
+     *
      * @param int $pagina
      * @param TareaRepository $tareaRepository
      * @return Response
@@ -26,8 +27,7 @@ class IndexController extends AbstractController
     public function index(int $pagina, TareaRepository $tareaRepository): Response
     {
         //dump($pagina);
-        $tareas= $tareaRepository
-            ->buscarTodas($pagina, self::ELEMENTOS_POR_PAGINA);
+        $tareas= $tareaRepository->buscarTodasPorUsuario($pagina, self::ELEMENTOS_POR_PAGINA);
 
         return $this->render('index/index.html.twig', [
             'tareas' => $tareas,

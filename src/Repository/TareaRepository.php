@@ -6,6 +6,7 @@ use App\Entity\Tarea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @method Tarea|null find($id, $lockMode = null, $lockVersion = null)
@@ -15,9 +16,12 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class TareaRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    private $usuario ;
+
+    public function __construct(Security $security, ManagerRegistry $registry)
     {
         parent::__construct($registry, Tarea::class);
+        $this->usuario = $security->getUser();
     }
 
     public function buscarTareaPorDescripcion(string $descripcion)
@@ -42,7 +46,20 @@ class TareaRepository extends ServiceEntityRepository
 
     public function buscarTodas($pagina = 1, $elementos_por_pagina = 10)
     {
+        // All task
+         $query = $this->createQueryBuilder('t')
+            ->getQuery();
+
+        return $this->paginacion($query, $pagina, $elementos_por_pagina);
+    }
+
+    public function buscarTodasPorUsuario($pagina = 1, $elementos_por_pagina = 10)
+    {
+        // All task by user
         $query = $this->createQueryBuilder('t')
+            ->addOrderBy('t.creadoEn', 'DESC')
+            ->andWhere('t.usuario = :usuario')
+            ->setParameter('usuario', $this->usuario)
             ->getQuery();
 
         return $this->paginacion($query, $pagina, $elementos_por_pagina);

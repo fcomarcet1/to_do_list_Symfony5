@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * @Route("/tareas")
@@ -29,10 +30,11 @@ class TareaController extends AbstractController
 
     /**
      * @Route("/new", name="tarea_new", methods={"GET","POST"})
+     * @param Security $security
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Security $security, Request $request): Response
     {
         $tarea = new Tarea();
         $form = $this->createForm(TareaType::class, $tarea);
@@ -41,6 +43,7 @@ class TareaController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 
             $entityManager = $this->getDoctrine()->getManager();
+            $tarea->setUsuario($security->getUser());
             $entityManager->persist($tarea);
             $entityManager->flush();
 
@@ -110,6 +113,8 @@ class TareaController extends AbstractController
     }
 
     /**
+     * Method for Ajax request
+     *
      * @Route("/{id}", name="tarea_finalizar", methods={"POST"})
      * @param Request $request
      * @param Tarea $tarea
